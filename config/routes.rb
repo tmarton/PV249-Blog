@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :posts, only: [:index, :new, :edit, :filter]
+  resources :posts, only: [:index, :new, :create, :edit, :update, :destroy]
+
+  get 'posts/filter/:tag_name' => 'posts#filter', as: :filter_posts
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

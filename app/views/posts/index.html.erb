@@ -2,39 +2,48 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
+
+<h4 class="text-center">Filter by tag</h4>
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <% @tags.each do |tag| %>
+        <%= link_to tag.name,
+                    filter_posts_path(tag.name), :class => 'filter-by-tag' %>
+    <% end %>
+  </div>
+</div>
+<hr class="custom-hr">
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_post_path,
+            :class => 'btn btn-success' %>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:author) %></th>
       <th><%= model_class.human_attribute_name(:title) %></th>
       <th><%= model_class.human_attribute_name(:body) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:tags) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @posts.each do |post| %>
-      <tr>
-        <td><%= link_to post.id, post_path(post) %></td>
-        <td><%= post.author %></td>
-        <td><%= post.title %></td>
-        <td><%= post.body %></td>
-        <td><%=l post.created_at %></td>
+      <tr id="post-row-<%= post.id %>">
+        <td class="post-author"><%= post.author %></td>
+        <td class="post-title"><%= post.title %></td>
+        <td class="post-body"><%= post.body %></td>
+        <td class="post-tags"><%= post.tag_list %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_post_path(post), :class => 'btn btn-default btn-xs' %>
+                      edit_post_path(post), :class => 'btn btn-warning' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       post_path(post),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
+                      :class => 'btn btn-danger' %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_post_path,
-            :class => 'btn btn-primary' %>

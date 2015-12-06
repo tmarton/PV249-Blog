@@ -4,7 +4,9 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.includes(:tags).order('updated_at DESC').all
+    # @tags = @posts.flat_map { |post| post.tags}
+    @tags = Tag.joins(:posts).group('tags.id').order('count(posts.id) desc')
   end
 
   # GET /posts/1
@@ -25,29 +27,20 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+    if @post.save
+      redirect_to posts_url, notice: 'Post was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+    if @post.update(post_params)
+      redirect_to posts_path, notice: 'Post was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -55,10 +48,17 @@ class PostsController < ApplicationController
   # DELETE /posts/1.json
   def destroy
     @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    ids = Tag.includes(:posts).where(:posts => { :id => nil }).pluck(:id)
+    Tag.where(id: ids).delete_all
+    redirect_to posts_url, notice: 'Post was successfully destroyed.'
+  end
+
+  def filter
+    @posts = Post.joins(:tags).where(tags: { name:  params[:tag_name] })
+    # this is just rubocop optimalization, meaning is the same
+    # @tags = Tag.joins(:posts).where(posts: { id: @posts.map { |post| post.id } })
+    @tags = Tag.joins(:posts).where(posts: { id: @posts.map(&:id) })
+    render :index
   end
 
   private
@@ -70,6 +70,6 @@ class PostsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:author, :title, :body)
+    params.require(:post).permit(:author, :title, :body, :tag_list, :tag_name)
   end
 end
