@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :posts, only: [:index, :new, :create, :edit, :update, :destroy]
 
   get 'posts/filter/:tag_name' => 'posts#filter', as: :filter_posts
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+
+  get 'users' => 'users#index', as: :users
 
   # You can have the root of your site routed with "root"
   root 'posts#index'

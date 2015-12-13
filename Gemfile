@@ -7,9 +7,6 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 end
-group :production do
-  gem 'pg'
-end
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,9 +15,6 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-
-#use twitter bootstrap
-gem "twitter-bootstrap-rails"
 
 gem 'rubocop', require: false
 
@@ -50,8 +44,25 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
+  gem 'better_errors'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+# Additional gems
+
+gem 'devise'
+gem 'cancancan'
+gem 'rolify'
+gem "twitter-bootstrap-rails"
+gem "paperclip"
+
+
+group :production do
+  gem 'pg'
+end
+
+group :development do
+  gem 'letter_opener'
 end
 

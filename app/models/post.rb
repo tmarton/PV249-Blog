@@ -1,5 +1,7 @@
 class Post < ActiveRecord::Base
   has_and_belongs_to_many :tags
+  resourcify
+  belongs_to :creator, class_name: 'User'
 
   validates :author, :title, :body, :tags, presence: true
 

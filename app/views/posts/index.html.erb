@@ -35,13 +35,17 @@
         <td class="post-body"><%= post.body %></td>
         <td class="post-tags"><%= post.tag_list %></td>
         <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_post_path(post), :class => 'btn btn-warning' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      post_path(post),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-danger' %>
+          <% if can? :update, post %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_post_path(post), :class => 'btn btn-warning' %>
+          <% end %>
+          <% if can? :destroy, post %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        post_path(post),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+          <% end %>
         </td>
       </tr>
     <% end %>

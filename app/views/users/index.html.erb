@@ -1,0 +1,28 @@
+<%- model_class = User -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+
+<hr class="custom-hr">
+
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= model_class.human_attribute_name(:avatar) %></th>
+    <th><%= model_class.human_attribute_name(:email) %></th>
+    <th><%= model_class.human_attribute_name(:confirmed_at) %></th>
+    <th><%= model_class.human_attribute_name(:last_sign_in_at) %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+      <tr id="post-row-<%= user.id %>">
+        <td><%= image_tag user.avatar.url, style: 'width: 80px;' %></td>
+        <td><%= user.email %></td>
+        <td><%= user.confirmed_at %></td>
+        <td><%= user.last_sign_in_at %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

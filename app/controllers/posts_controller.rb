@@ -9,11 +9,6 @@ class PostsController < ApplicationController
     @tags = Tag.joins(:posts).group('tags.id').order('count(posts.id) desc')
   end
 
-  # GET /posts/1
-  # GET /posts/1.json
-  def show
-  end
-
   # GET /posts/new
   def new
     @post = Post.new
@@ -27,6 +22,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
+    @post.creator = current_user
     if @post.save
       redirect_to posts_url, notice: 'Post was successfully created.'
     else

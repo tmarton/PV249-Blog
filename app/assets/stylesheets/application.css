@@ -27,3 +27,9 @@ hr.custom-hr {
     height: 1px;
     background-image: linear-gradient(to right, transparent, rgba(0,0,0,0.75), transparent);
 }
+
+.navbar { min-height: 38px; font-size: 18px; color: #fff;}
+
+.navbar-right {
+    margin-right: 15px;
+}
