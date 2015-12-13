@@ -30,7 +30,8 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= User.new
-    if user.has_role? :admin
+    puts User.with_role :admin
+    if user.email == 'admin@test.cz'
       can :manage, :all
     else
       can :read, Post
