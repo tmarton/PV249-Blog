@@ -31,7 +31,7 @@ class Ability
 
     user ||= User.new
     puts User.with_role :admin
-    if user.email == 'admin@test.cz'
+    if user.has_role? :admin
       can :manage, :all
     else
       can :read, Post
