@@ -34,7 +34,7 @@ class Ability
     if user.has_role? :admin
       can :manage, :all
     else
-      can :read, Post
+      can [:read, :create], Post
       can [:update, :destroy], Post do |post|
         post.try(:creator) == user
       end
