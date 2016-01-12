@@ -1,5 +1,5 @@
 # TODO change it to find on create
-User.create! :email => 'admin@test.cz', :password => 'testtest', :password_confirmation => 'testtest', :confirmed_at => Time.now
+User.create! :username => 'admin', :email => 'admin@test.cz', :password => 'admin123', :password_confirmation => 'admin123', :confirmed_at => Time.now
 
 
 admin = User.find(1)
